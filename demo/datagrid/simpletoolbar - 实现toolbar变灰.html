@@ -11,7 +11,7 @@
 	<script type="text/javascript">
 	$(function(){
 		$("#datagrid").datagrid({
-			toolbar:toolbar
+			toolbar:'#tb'
 		})
 		//easyRightDisplay();
 	})
@@ -21,10 +21,32 @@
 	}
 	function clicke(){
 		//$('div.datagrid div.datagrid-toolbar a').hide();
-		$("#add").hide();
+		$("#add_person").hide();
 	}
 	function DoDisabled(){
-	$("#add").linkbutton('disable');
+	//获取tb下的所有a标签
+	//var buttons= $("#tb a");
+	var buttons= $('#tb a').filter('[class^=easyui]');
+	if(buttons.length>0){
+		buttons.linkbutton('disable');
+	}
+	var combogrids=$('#tb select').filter('[class^=easyui-combogrid]');
+	if(combogrids.length>0){
+		combogrids.combogrid('disable');
+	}
+	var combotrees=$('#tb select').filter('[class^=easyui-combotree]')
+	if(combotrees.length>0){
+		combotrees.combotree('disable');
+	}
+	
+	//buttons.hide();
+	//buttons.linkbutton('disable');
+	alert("测试");
+	//for(var i=0;i<buttons.length;i++){
+	//var button=buttons[i];
+	//	button.linkbutton('disable');
+	//}
+	//$("#add").linkbutton('disable');
 	}
 	</script>
 </head>
@@ -48,22 +70,16 @@
 			</tr>
 		</thead>
 	</table>
-	</div>	
-	<script type="text/javascript">
-		var toolbar = [{
-			id:'add',
-			text:'Add',
-			iconCls:'icon-add',
-			handler:function(){alert('add')}
-		},{
-			text:'Cut',
-			iconCls:'icon-cut',
-			handler:function(){alert('cut')}
-		},'-',{
-			text:'Save',
-			iconCls:'icon-save',
-			handler:function(){alert('save')}
-		}];
-	</script>
+	</div>
+	
+		<div id="tb" style="padding:2px 5px;">
+    <a href="#" class="easyui-linkbutton" istb="true" id="add_person" data-options="iconCls:'icon-add',text: '添加联系人',plain:true" onclick=""></a>
+    <a href="#" class="easyui-linkbutton" id="del_person" data-options="iconCls:'icon-cut',text: '删除联系人',plain:true" onclick=""></a>
+    移至分组:
+    <select class="easyui-combogrid" name="PDID" id="group" style="width:130px" data-options="editable: false"></select>
+    选择所属部门
+    <select class="easyui-combotree" name="PDID" id="DepartmentName_combotree" panelHeight="auto" style="width:200px" data-options=""></select>
+	</div>
+	
 </body>
 </html>
