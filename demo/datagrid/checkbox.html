@@ -8,6 +8,31 @@
 	<link rel="stylesheet" type="text/css" href="../demo.css">
 	<script type="text/javascript" src="../../jquery.min.js"></script>
 	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+	<script type="text/javascript">
+	$(function () {
+	    $("#mycombogrid").combogrid({
+	        singleSelect: false,
+	        checkOnSelect: true,
+	        selectOnCheck: true,
+                onSelect: function (rowIndex, rowData) {
+                    //loadDataGridByGroupDepartment_Personss();
+					//alert("选中");
+                },
+                onUnselect: function (rowIndex, rowData) {
+                    //loadDataGridByGroupDepartment_Personss();
+					//alert("取消");
+                },
+                onCheck : function (rowIndex, rowData) {
+                    //loadDataGridByGroupDepartment_Personss();
+                   // alert("checked");
+                },
+                onUnCheck: function (rowIndex, rowData) {
+                    //loadDataGridByGroupDepartment_Personss();
+                    alert("取消check");
+                }
+            })
+		})
+	</script>
 </head>
 <body>
 	<h2>CheckBox Selection on DataGrid</h2>
