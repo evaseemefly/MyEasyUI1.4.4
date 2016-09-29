@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>DataGrid with Toolbar - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="../../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../demo.css">
+	<script type="text/javascript" src="../../jquery.min.js"></script>
+	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		$("#datagrid").datagrid({
+			toolbar:toolbar
+		})
+		//easyRightDisplay();
+	})
+	function easyRightDisplay(){
+	
+		$('div.datagrid div.datagrid-toolbar a').hide();
+	}
+	function clicke(){
+		//$('div.datagrid div.datagrid-toolbar a').hide();
+		$("#add").hide();
+	}
+	function DoDisabled(){
+	$("#add").linkbutton('disable');
+	}
+	</script>
+</head>
+<body>
+	<h2>DataGrid with Toolbar</h2>
+	<p>Put buttons on top toolbar of DataGrid.</p>
+	<div style="margin:20px 0;"></div>
+	<input type="button" onClick="clicke()" value="hide"/>
+	<input type="button" onClick="DoDisabled()" value="disabled"/>
+	<div id="mydiv">
+	<table class="easyui-datagrid" id="datagrid" title="DataGrid with Toolbar" style="width:700px;height:250px"
+			data-options="rownumbers:true,singleSelect:true,url:'datagrid_data1.json',method:'get'">
+		<thead>
+			<tr>
+				<th data-options="field:'itemid',width:80">Item ID</th>
+				<th data-options="field:'productid',width:100">Product</th>
+				<th data-options="field:'listprice',width:80,align:'right'">List Price</th>
+				<th data-options="field:'unitcost',width:80,align:'right'">Unit Cost</th>
+				<th data-options="field:'attr1',width:240">Attribute</th>
+				<th data-options="field:'status',width:60,align:'center'">Status</th>
+			</tr>
+		</thead>
+	</table>
+	</div>	
+	<script type="text/javascript">
+		var toolbar = [{
+			id:'add',
+			text:'Add',
+			iconCls:'icon-add',
+			handler:function(){alert('add')}
+		},{
+			text:'Cut',
+			iconCls:'icon-cut',
+			handler:function(){alert('cut')}
+		},'-',{
+			text:'Save',
+			iconCls:'icon-save',
+			handler:function(){alert('save')}
+		}];
+	</script>
+</body>
+</html>

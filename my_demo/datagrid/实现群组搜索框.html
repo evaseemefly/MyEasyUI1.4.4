@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>DataGrid Complex Toolbar - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="../../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../demo.css">
+	<script type="text/javascript" src="../../jquery.min.js"></script>
+	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+</head>
+<body>
+	<h2>DataGrid Complex Toolbar</h2>
+	<p>The DataGrid toolbar can be defined from a &lt;div&gt; markup, so you can define the layout of toolbar easily.</p>
+	<div style="margin:20px 0;"></div>
+	<table class="easyui-datagrid" title="DataGrid Complex Toolbar" style="width:700px;height:250px"
+			data-options="rownumbers:true,singleSelect:true,url:'datagrid_data1.json',method:'get',toolbar:'#tb',footer:'#ft'">
+		<thead>
+			<tr>
+				<th data-options="field:'itemid',width:80">Item ID</th>
+				<th data-options="field:'productid',width:100">Product</th>
+				<th data-options="field:'listprice',width:80,align:'right'">List Price</th>
+				<th data-options="field:'unitcost',width:80,align:'right'">Unit Cost</th>
+				<th data-options="field:'attr1',width:240">Attribute</th>
+				<th data-options="field:'status',width:60,align:'center'">Status</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="tb" style="padding:2px 5px;">
+        <a href="#" class="easyui-linkbutton" istb="true" id="add_group" data-options="iconCls:'icon-add',text: '新增',plain:true" onclick="addGroupRow"></a>
+        <a href="#" class="easyui-linkbutton" id="del_group" data-options="iconCls:'icon-remove',text: '删除',plain:true" onclick="removeGroupRow"></a>
+        <a href="#" class="easyui-linkbutton" id="edit_group" data-options="iconCls:'icon-edit',text: '编辑',plain:true" onclick="editGroupRow"></a>
+		<br/>
+        <input class="easyui-validatebox" type="text" id="personPhoneNum" style="width:'20%'" data-options="">
+        <a class="easyui-linkbutton" iconCls="icon-search" onclick="searchContacts()">查询</a>
+    </div>
+	<div id="ft" style="padding:2px 5px;">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true"></a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true"></a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true"></a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true"></a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true"></a>
+	</div>
+</body>
+</html>
