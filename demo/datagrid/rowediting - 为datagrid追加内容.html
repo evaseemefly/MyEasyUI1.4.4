@@ -9,10 +9,11 @@
 	<script type="text/javascript" src="../../jquery.min.js"></script>
 	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
 </head>
-<body>
-	<h2>发送短信时添加临时联系人</h2>
-	<div style="margin:20px 0;"></div>
-    <table class="easyui-datagrid" id="persondatagrid" style="width:700px;height:auto"></table>
+<body>	
+	<div style="margin:20px 0;"></div>	
+	<table class="easyui-datagrid"title="添加临时联系人" id="person_temp_datagrid" style="width:400px;height:200px"></table>	
+    <table class="easyui-datagrid"title="联系人列表" id="persondatagrid" style="width:400px;height:400px"></table>
+	 
 	<div id="tb" style="height:auto">		
         <input class="easyui-textbox" id="txt_addPerson"  data-options="buttonText:'添加',buttonIcon:'icon-add',prompt:'添加临时联系人...',onClickButton:function(){append()}" } style="width:90%;">
         <button onclick="getAppendPersonObj()">提交</button>
@@ -22,25 +23,27 @@
 		var editIndex = undefined;
 		
 		$(function () {
-		    loadDataGrid_Person("datagrid_data_person.json");
+		    loadDataGrid_Person("persondatagrid","datagrid_data_person.json","200");
+			loadDataGrid_Person("person_temp_datagrid","");
 		})
 
 		function test() {
 		    alert("测试");
 		}
 
-		function loadDataGrid_Person(url) {
-		    $("#persondatagrid").datagrid({
+		function loadDataGrid_Person(id,url,temp) {
+		    $("#"+id).datagrid({
 		        fitColumns: true,
 		        striped: true,
 		        multiple: true,     //单选
-		        fit: true,
+		        //fit: true,
 		        url: url,
 		        showHeader: true,
 		        // pagination:true,//在数据表格控件底部显示分页工具栏
 		        rownumbers: true, //是否加行号
 		        loadMsg: '加载中……',
 		        columns: PersonColumns,
+				fitColumns:true,
 		        toolbar: '#tb',
 		        onLoadSuccess: function () {
 		            var data = $("#persondatagrid").datagrid("getData");
@@ -55,6 +58,12 @@
 		    p.pagination({
 		        displayMsg: '共{total}条数据'
 		    });
+			
+			if(temp!=null){
+			$("#persondatagrid").datagrid({			
+				pagination:true
+			})
+			}
 		}
 		
 
@@ -76,7 +85,7 @@
 		   row_temp.isVIP = true;
 		   row_temp.PhoneNum = phone;
 		   row_temp.isTemp = 2;
-		   $('#persondatagrid').datagrid('appendRow', row_temp);
+		   $('#person_temp_datagrid').datagrid('appendRow', row_temp);
 		}
 
 		function split4id(obj, index_temp) {

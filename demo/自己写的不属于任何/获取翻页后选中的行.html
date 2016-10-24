@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Custom DataGrid Pager - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="../../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../demo.css">
+	<script type="text/javascript" src="../../jquery.min.js"></script>
+	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+	 <script type="text/javascript">
+            var $dg;
+            var $grid;
+            var ids = '';
+            var idsArray = new Array();
+            $(function() {
+                 $dg = $("#dg");
+                 $grid=$dg.datagrid({
+                    url : "${getDataUrl}",
+                    width : 'auto',
+                    height : $(this).height()-85,
+                    pagination:true,
+                    rownumbers:true,
+                    border:true,
+                    striped:true,
+                    singleSelect:false,
+                    checkOnSelect:true,
+                    selectOnCheck:true,
+                    onBeforeLoad:function(data){
+                        addSelectedGoodsIdToArray();
+                    },
+                    onLoadSuccess:function(data){
+                        var rowsData = data.rows;
+                        if(idsArray.length!=0){
+                          $.each(idsArray,function(i,e){
+                             for(var index=0;index<rowsData.length;index++){
+                                  if(rowsData[index].goodsId==e){
+                                       $dg.datagrid('selectRow',index);
+                                  }
+                             }
+                          });
+                        }
+                    },
+                    onUncheck:function(rowIndex,rowData){
+                        if(idsArray.length == 0){
+                        }else{
+                            for(var index=0;index<idsArray.length;index++){
+                                if(idsArray[index] == rowData.goodsId){
+                                    removeArrayValue(idsArray,rowData.goodsId);
+                                    break;
+                                }
+                            }
+                        }
+                    },
+                    columns : [ [ {field:'ck',checkbox:true},
+                                  {field : 'goodsId',hidden:true},
+                                  {field : 'goodsName',title : '商品标题',width : parseInt($(this).width()*0.3)},
+                                  {field : 'img1',title : '图片',width : parseInt($(this).width()*0.1),align : 'left',
+                                      formatter:function(value,row){
+                                          if(row.img1 != '')
+                                              return "<img src = '"+row.img1+"'/>";
+                                          else
+                                              return "<img src = '"+row.img1+"'/>";  
+                                        }
+                                  },
+                                  {field : 'categoryId',title : '分类',width : parseInt($(this).width()*0.1),align : 'left',
+                                        formatter:function(value,row){
+                                          var cates = row.categorys;
+                                          for(var i=0;i<cates.length;i++){
+                                              if(cates[i].categoryId === row.categoryId){
+                                                  return cates[i].categoryName;
+                                              }
+                                          } 
+                                        }
+                                  },
+                                  {field : 'goodsNumber',title : '库存',width : parseInt($(this).width()*0.1)},
+                                  {field : 'isOnSale',title : '上架',width :parseInt($(this).width()*0.1),align : 'left',
+                                      formatter:function(value,row){
+                                          if(row.isOnSale){
+                                              return "<font color=green>是<font>";
+                                          } else{
+                                              return "<font color=red>否<font>"; 
+                                          }
+                                        }
+                                  },
+                                  {field : 'lastUpdate',title : '上架时间',width : parseInt($(this).width()*0.1),align : 'left',
+                                      formatter:function(value,row){
+                                            var thisDate = new Date(row.lastUpdate);
+                                              return formatterDate(thisDate);
+                                      }
+                                  }
+                                  ] ],toolbar:'#tb'
+                });
+                
+                //搜索框
+                /* $("#searchbox").searchbox({ 
+                     menu:"#mm", 
+                     prompt :'模糊查询',
+                    searcher:function(value,name){   
+                        var str="{\"searchName\":\""+name+"\",\"searchValue\":\""+value+"\"}";
+                        var obj = eval('('+str+')');
+                        $dg.datagrid('reload',obj); 
+                    }
+                   
+                });  */
+            });
+            
+            function addCheckedGoodIdToArray(rowIndex,rowData){
+                console.log("_________________________");
+                var idsArrayLength = idsArray.length;
+                        
+                if(idsArray.length == 0){
+                    console.log("push:"+rowData.goodsId);
+                    idsArray.push(rowData.goodsId);
+                }else{
+                    for(var index=0;index<idsArrayLength;index++){
+                        if(idsArray[index] == rowData.goodsId){
+                            console.log("remove:"+rowData.goodsId);
+                            removeArrayValue(idsArray,rowData.goodsId);
+                            break;
+                        }
+                        if(index == idsArrayLength-1){
+                            console.log("push:"+rowData.goodsId);
+                            idsArray.push(rowData.goodsId);
+                        }
+                    }
+                }
+                
+                console.log("---------------");
+                for(var index=0;index<idsArray.length;index++){
+                    console.log(idsArray[index]);
+                }
+                console.log("---------------");
+            }
+            
+            function addSelectedGoodsIdToArray(){
+                var rows = $dg.datagrid('getSelections');
+                if(rows.length>0){
+                    $.each(rows,function(i,row){
+                        if(idsArray.length == 0){
+                            idsArray.push(row.goodsId);
+                        }else{
+                            for(var index=0;index<idsArray.length;index++){
+                                if(idsArray[index] == row.goodsId){
+                                    break;
+                                }
+                                if(index == idsArray.length-1){
+                                    idsArray.push(row.goodsId);
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+            
+            function removeSelectedGoodsIdToArray(rows){
+                //var rows = $dg.datagrid('getSelections');
+                if(rows.length>0){
+                    $.each(rows,function(i,row){
+                        if(idsArray.length > 0){
+                            for(var index=0;index<idsArray.length;index++){
+                                removeArrayValue(idsArray,row.goodsId);
+                            }
+                        }
+                    });
+                }
+            }
+        
+            function nextStep() {
+                addSelectedGoodsIdToArray();
+                console.log("ids length"+idsArray.length);
+                if(idsArray.length>0){
+                    ids = '';
+                    for(var index=0;index<idsArray.length;index++){
+                        ids += idsArray[index];
+                        if(index != idsArray.length-1){
+                            ids += ',';
+                        }
+                    }
+                }else{
+                    
+                }
+                parent.$.modalDialog({
+                    title : '商品排序',
+                    width : 1632,
+                    height : 830,
+                    href : "${pageContext.request.contextPath}/coupons/showAddStep3?goodsId="+ids,
+                    onLoad:function(){
+                        
+                    },
+                    buttons : [ {
+                        text : '下一步',
+                        iconCls : 'icon-ok',
+                        handler : function() {
+                            parent.$.modalDialog.openner= $grid;//因为添加成功之后，需要刷新这个dataGrid，所以先预定义好
+                            var f = parent.$.modalDialog.handler.find("#form");
+                            f.submit();
+                        }
+                    }, {
+                        text : '取消',
+                        iconCls : 'icon-cancel',
+                        handler : function() {
+                            parent.$.modalDialog.handler.dialog('destroy');
+                            parent.$.modalDialog.handler = undefined;
+                        }
+                    }
+                    ]
+                });
+            }
+            //编辑
+            function editOneGood() {
+                //console.log("run edit");
+                var row = $dg.datagrid('getSelected');
+                if (row) {
+                    window.location.href="${pageContext.request.contextPath}/goods/showEditGoods?goodsId="+row.goodsId;
+                }else{
+                    parent.$.messager.show({
+                        title :"提示",
+                        msg :"请选择一行记录!",
+                        timeout : 1000 * 2
+                    });
+                }
+            }
+            function addOneGood() {
+                //console.log("run edit");
+                window.location.href="${pageContext.request.contextPath}/goods/showAddGood";
+            }
+            
+            //高级搜索 删除 row
+            function tbCompanySearchRemove(curr) {
+                    $(curr).closest('tr').remove();
+            }
+            //高级查询
+            function tbsCompanySearch() {
+                jqueryUtil.gradeSearch($dg,"#tbCompanySearchFm","jsp/company/companySearchDlg.jsp");
+            }
+            
+            /**
+             * 格式化日期（含时间）
+             */
+            function formatterDate(date) {
+                var datetime = date.getFullYear()
+                + "-"// "年"
+                + ((date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : "0"
+                        + (date.getMonth() + 1))
+                + "-"// "月"
+                + (date.getDate() < 10 ? "0" + date.getDate() : date
+                        .getDate())
+                + " "
+                + (date.getHours() < 10 ? "0" + date.getHours() : date
+                        .getHours())
+                + ":"
+                + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date
+                        .getMinutes())
+                + ":"
+                + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date
+                        .getSeconds());
+                return datetime;
+            }
+            
+            function removeArrayValue(arr, val) {
+              for(var i=0; i<arr.length; i++) {
+                if(arr[i] == val) {
+                  arr.splice(i, 1);
+                  break;
+                }
+              }
+            }
+        </script>
+</head>
+<body>
+      <div data-options="region:'center',border : false">
+          <div class="well well-small" style="margin-left: 5px;margin-top: 5px">
+            <span class="badge">添加优惠券步骤</span>
+            <p>
+                1：填写优惠券基本信息&nbsp——————————&nbsp<span class="label-info"><strong>2：选择优惠券中的商品</strong></span>&nbsp——————————&nbsp3：保存并生成优惠券
+            </p>
+        </div>
+        <div id="tb" style="padding:2px 0">
+            <table cellpadding="0" cellspacing="0">
+                <tr>
+                    <td style="padding-left:2px">
+                            <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="nextStep()">下一步</a>
+                            <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="">取消</a>
+                    </td>
+                    <!-- <td style="padding-left:2px">
+                        <input id="searchbox" type="text"/>
+                    </td> -->
+                    <!--  <td style="padding-left:2px">
+                        <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="tbsCompanySearch();">高级查询</a>
+                    </td>-->
+                </tr>
+            </table>
+        </div>
+        <table id="dg" title="添加优惠券步骤2"></table>
+      </div>    
+  </body>
+	<h2>Custom DataGrid Pager</h2>
+	<p>You can append some buttons to the standard datagrid pager bar.</p>
+	<div style="margin:20px 0;"></div>
+	<table id="dg" title="Custom DataGrid Pager" style="width:700px;height:250px"
+			data-options="rownumbers:true,singleSelect:true,pagination:true,url:'datagrid_data1.json',method:'get'">
+		<thead>
+			<tr>
+				<th data-options="field:'itemid',width:80">Item ID</th>
+				<th data-options="field:'productid',width:100">Product</th>
+				<th data-options="field:'listprice',width:80,align:'right'">List Price</th>
+				<th data-options="field:'unitcost',width:80,align:'right'">Unit Cost</th>
+				<th data-options="field:'attr1',width:240">Attribute</th>
+				<th data-options="field:'status',width:60,align:'center'">Status</th>
+			</tr>
+		</thead>
+	</table>
+	<script type="text/javascript">
+		$(function(){
+			var pager = $('#dg').datagrid().datagrid('getPager');	// get the pager of datagrid
+			pager.pagination({
+				buttons:[{
+					iconCls:'icon-search',
+					handler:function(){
+						alert('search');
+					}
+				},{
+					iconCls:'icon-add',
+					handler:function(){
+						alert('add');
+					}
+				},{
+					iconCls:'icon-edit',
+					handler:function(){
+						alert('edit');
+					}
+				}]
+			});			
+		})
+	</script>
+</body>
+</html>
