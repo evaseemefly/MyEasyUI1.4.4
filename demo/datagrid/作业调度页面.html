@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>DataGrid Complex Toolbar - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="../../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../demo.css">
+	<script type="text/javascript" src="../../jquery.min.js"></script>
+	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+    <script type="text/javascript">
+        var JobColumns = [[
+                 { field: 'JID', title: 'ID', width: 50, checkbox: true },
+                 { field: 'JobName', title: '用户名称', width: 100 },
+                 { field: 'JobGroup', title: '电话号码', width: 150 },
+                 { field: 'isVIP', title: '是否是VIP', width: 150 },
+                 { field: 'isTemp', title: '是否是临时联系人', width: 50 }
+        ]]
+
+        function loadDataGrid_Job(id, url, temp) {
+            $("#" + id).datagrid({
+                fitColumns: true,
+                striped: true,
+                multiple: true,     //单选
+                //fit: true,
+                url: url,
+                showHeader: true,
+                // pagination:true,//在数据表格控件底部显示分页工具栏
+                rownumbers: true, //是否加行号
+                loadMsg: '加载中……',
+                columns: JobColumns,
+                fitColumns: true,
+                toolbar: '#tb',
+                onLoadSuccess: function () {
+                    var data = $("#persondatagrid").datagrid("getData");
+                    var rowData = data.rows;
+                    $.each(rowData, function (rowIndex, rowData) {
+                        $("#persondatagrid").datagrid("selectRow", rowIndex);
+                    });
+                },
+                onUnselect: function (rowIndex, rowData) {
+                    //alert("去掉已经选中的一行");
+                 
+                }
+            });
+        }
+
+        $(function () { })
+    </script>
+</head>
+<body>
+    <div>
+        <table class="easyui-datagrid" id="datagrid"></table>
+        <div id="tb_contacts" style="padding:2px 5px;">
+            <a href="#" class="easyui-linkbutton" istb="true" id="add_job" data-options="iconCls:'icon-add',text: '新增',plain:true" onclick="addJobRow()"></a>
+            <a href="#" class="easyui-linkbutton" id="del_job" data-options="iconCls:'icon-remove',text: '删除',plain:true" onclick="removeJobRow()"></a>
+            <a href="#" class="easyui-linkbutton" id="edit_Job" data-options="iconCls:'icon-edit',text: '编辑',plain:true" onclick="editJobRow()"></a>
+        </div>
+    </div>
+	<h2>DataGrid Complex Toolbar</h2>
+	<p>The DataGrid toolbar can be defined from a &lt;div&gt; markup, so you can define the layout of toolbar easily.</p>
+	<div style="margin:20px 0;"></div>	
+	<div id="tb" style="padding:2px 5px;">
+		Date From: <input class="easyui-datebox" style="width:110px">
+		To: <input class="easyui-datebox" style="width:110px">
+		Language: 
+		<select class="easyui-combobox" panelHeight="auto" style="width:100px">
+			<option value="java">Java</option>
+			<option value="c">C</option>
+			<option value="basic">Basic</option>
+			<option value="perl">Perl</option>
+			<option value="python">Python</option>
+		</select>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-search">Search</a>
+	</div>
+	<div id="ft" style="padding:2px 5px;">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true"></a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true"></a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true"></a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true"></a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true"></a>
+	</div>
+</body>
+</html>

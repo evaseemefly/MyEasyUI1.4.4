@@ -1,0 +1,4 @@
+{"total":28,"rows":[{"UserInfoes":[],"J_JobTemplate":[],"UID":0,"JID":1,"JobName":"testjob","JobGroup":"testgroup","JobClassName":"test","JobState":99,"CronStr":null,"StartRunTime":"2016-11-02T15:51:15.417","EndRunTime":"2016-11-02T15:51:15.417","NextRunTime":"2016-11-02T15:51:15.417","Token":null,"AppID":null,"Remark":null,"InfoState":99,"CreateUser":null,"CreateTime":"2016-11-02T15:51:15.417","isDel":false}],"footer":[
+	{"unitcost":19.80,"listprice":60.40,"productid":"Average:"},
+	{"unitcost":198.00,"listprice":604.00,"productid":"Total:"}
+]}
