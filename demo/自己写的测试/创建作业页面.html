@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Basic LinkButton - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="../../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../demo.css">
+	<script type="text/javascript" src="../../jquery.min.js"></script>
+	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+	<script type="text/javascript">
+        $(function () {
+            //loadCombogrid_byUser();
+            loadCombo_JobTemplate("combo_jobTemplate", "combo-jobTemplate.json");
+        })
+
+        //加载作业模板下拉框
+        function loadCombo_JobTemplate(id, url) {
+            var div_id = "#" + id;
+            $(div_id).combobox({
+                valueField: 'id',
+                textField: 'text',
+                url: url,
+                editable:false,//不可向输入框内写入数据
+                onSelect: function (rowdata) {
+                    alert(rowdata.text);
+                    //
+                }
+            })
+        }
+
+        //加载短信任务combogrid
+        function loadCombogrid_byUser() {
+            var myurl = 'combo-jobTemplate.json';
+            var userId=-999;
+            //拼接
+            
+            //根据当前登录用户加载该用户所拥有的短信任务
+            $("#combo_jobTemplate").combogrid({
+                url: myurl,
+                method: 'get',
+                idField: 'id',
+                textField: 'text',
+                //width:120,
+                panelWidth: 180,
+                panelHeight: 'auto',
+                editable: false,
+                multiple: false,
+                //formatter: formatItem_combobox,
+                columns: missionColumns,               
+                onSelect:function(rowIndex, rowData){
+                    //点击任务后显示该任务所拥有的群组以及部门
+                    //alert("被点击了");
+                    //loadComboGrid_Group(rowData.SMID,userId);
+                    //loadComboTree_Department(rowData.SMID);
+                    //根据所选的短信任务类型加载模板
+                    //loadtextbox_Template(rowData.SMID,userId);
+                }
+            })
+        }
+
+        function afterEdit() {
+            alert("提交成功");//——经测试提交表单成功后可以执行OnSucess的回调函数
+            //提交表单成功后关闭本页面
+            window.close();
+            //此处也可以调用window.parent.xxx——当前页面的父级页面中的xxx方法
+        }
+    </script>
+</head>
+<body>
+     <div>
+    <form id="ff" class="easyui-form" method="post" style="margin:0px;">
+        <div style="height:30px;width:100%;background-color:#000000"></div>
+        <input type="hidden" name="ID" value="" />
+        <input type="hidden" name="SubTime" value="" />
+        <input type="hidden" id="hidden_isShow"  value="" />
+        <table style="margin-left:40px;width:95%" cellpadding="3">
+            <tr>
+                <td style="">作业名称:</td>
+                <td class="comment">
+                    <input class="easyui-validatebox" type="text" style="width:80%;height:25px" name="ActionInfoName" value="" data-options="required:true,validType:['CHS','length[1,50]']"></input><br />
+                    请填写权限名称
+                </td>
+                <td style="">所属作业模板:</td>
+                <td class="comment">
+                    <select id="combo_jobTemplate" name="JTID" class="easyui-combobox" style="width:80%;height:25px;"/><br />
+                    选择该权限所属的上级菜单
+                </td>
+            </tr>
+            <tr>
+                <td style="">作业群组:</td>
+                <td class="comment">
+                    <input class="easyui-textbox" type="text" style="width:80%;height:25px" name="AreaName" value="" ></input><br />
+                    请填写区域名称
+                </td>
+                <td style="">下次执行时间:</td>
+                <td class="comment">
+                    <input class="easyui-datetimebox" value="10/11/2012 2:3:56" style="width:80%"><br />
+                    请填写控制器名称
+                </td>
+            </tr>
+            <tr>
+                <td style="">作业类名:</td>
+                <td class="comment">
+                    <input class="easyui-textbox" type="text" style="width:80%;height:25px" name="ActionMethodName" value="" ></input><br />
+                    请填写控制器中方法名称
+                </td>
+                
+            </tr>
+            <tr>
+                <td>Cron表达式:</td>
+                <td class="comment" >
+                    <input class="easyui-textbox" name="Remark" data-options="multiline:true" style="height:40px;width:80%;" value=""><br />
+                    可选
+                </td>
+                <td>备注:</td>
+                <td class="comment" >
+                    <input class="easyui-textbox" name="Remark" data-options="multiline:true" style="height:40px;width:80%;" value=""><br />
+                    可选
+                </td>
+            </tr>
+            <tr>
+                
+                <td><a class="easyui-linkbutton c6" type="submit" style="margin-bottom:5px;width:100%" data-options="iconCls:'icon-ok'" onclick="Save()">提交</a></td>
+                <td><a class="easyui-linkbutton c5" style="margin-bottom:5px;width:50%" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="CancelSend()">取消</a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

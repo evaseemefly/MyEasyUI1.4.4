@@ -16,6 +16,55 @@
 
         ]]
 
+        function doDel(dg_id,callback) {
+            var rows = $("#" + dg_id).datagrid('getSelections');
+            //若选中的行不为一行
+            if (rows.length < 1) {
+                //提示
+                $.messager.show({
+                    title: '提示',
+                    msg: '请至少选中一行数据',
+                    showType: 'show'
+                });
+                return;
+            }
+            //post请求至软删除方法
+            var row_Id = "";
+            if ($.messager.confirm("提示", "确定要删除吗？", function (r) {
+                callback("测试测试");
+                if (r) {
+                    var strId = "";
+                for (var i = 0; i < rows.length; i++) {
+                        strId = strId + rows[i].JID + ",";
+            }
+                //去掉最后一个逗号
+                strId = strId.substr(0, strId.length - 1);
+                
+                alert(strId);
+            //    $.post("@ViewBag.DoDel" + "?ids=" + strId + "&&type=" + type, function (data) {
+            //    //请求成功后的回调函数
+            //    if (data == "ok") {
+            //    //重新加载treegrid
+            //       $("#datagrid").datagrid('reload');
+            //    //清楚所选中的行
+            //    $("#datagrid").datagrid('clearSelections');
+            //    $.messager.alert("提示", "删除成功");
+            //}
+            //});
+                }
+                
+            }));
+            
+        }
+        function pauseJobRow() {
+           var temp= doDel("datagrid",my_callback);
+           //alert(temp);
+        }
+
+        function my_callback(str) {
+            alert("我是回调函数。，带参数"+str);
+        }
+
         function loadDataGrid_Job(id, url) {
             $("#" + id).datagrid({
                 fitColumns: true,
