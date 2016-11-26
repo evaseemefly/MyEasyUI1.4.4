@@ -13,28 +13,12 @@
 	<div style="margin:20px 0;"></div>	
     <input type="button" onclick="UnCheckTargetRow()" />UnCheck<br/>
     <input type="button" onclick="UnSelectTargetRow()" />UnSelect<br />
-	<table class="easyui-datagrid"title="添加临时联系人" id="person_temp_datagrid" style="width:400px;height:200px"></table>	
     <table class="easyui-datagrid"title="联系人列表" id="persondatagrid" style="width:400px;height:400px"></table>
-	 
-	<div id="tb" style="height:auto">		
-        <input class="easyui-textbox" id="txt_addPerson"  data-options="buttonText:'添加',buttonIcon:'icon-add',prompt:'添加临时联系人...',onClickButton:function(){append()}" } style="width:90%;">
-        <button onclick="getAppendPersonObj()">提交</button>
-	</div>
-	
 	<script type="text/javascript">
 		var editIndex = undefined;
-		
 		$(function () {
 		    loadDataGrid_Person("persondatagrid","datagrid_data_person.json","200");
-		    loadDataGrid_Person("person_temp_datagrid", "");
-		    //$("#persondatagrid").datagrid("unselectRow", 1);
-		    //$("#persondatagrid").datagrid("uncheckRow", 1);
 		})
-
-		function test() {
-		    alert("测试");
-		}
-
 		function loadDataGrid_Person(id,url,temp) {
 		    $("#"+id).datagrid({
 		        fitColumns: true,
@@ -48,35 +32,50 @@
 		        loadMsg: '加载中……',
 		        columns: PersonColumns,
 				fitColumns:true,
-		        toolbar: '#tb',
+				toolbar: '#tb',
+				onBeforeLoad:function(){
+				    //alert("页面加载之前");
+				    isLoadSuccess = false;
+				},
 		        onLoadSuccess: function () {
 		            var data = $("#persondatagrid").datagrid("getData");
 		            var rowData = data.rows;
 		            $.each(rowData, function (rowIndex, rowData) {
-		                $("#persondatagrid").datagrid("selectRow", rowIndex);
+		                if ($.inArray(rowData["PID"], arr_UnSelectPersonIds) == -1) {
+		                    $("#persondatagrid").datagrid("selectRow", rowIndex);
+		                }
 		            });
+		            isLoadSuccess = true;
 		        },
 				selectOnCheck:true,
 				checkOnSelect:true,
 				onCheck:function(rowIndex,rowData){
 					//alert("被点击了");
 					//判断在数组中是否保存了本行数据
-					
+				    //alert("onCheck");
 		        },
 				onSelect: function (rowIndex, rowData) {
-				    if ($.inArray(rowData["PID"], arr_UnSelectPersonIds) != -1) {
-				        //若包含了本行数据，则取消选中状态
-				        //alert("取消队列中已经包含本行数据");
-				        //$("#persondatagrid").datagrid("uncheckRow", rowIndex);
-				        $("#persondatagrid").datagrid("unselectRow", rowIndex);
+                    //若页面加载结束后，才可以进行选中操作
+				    //if (!isPageChange) {
+                    //若有取消选中的操作，才判断是否加载
+				    
+				        //if ($.inArray(rowData["PID"], arr_UnSelectPersonIds) != -1) {
+				        //    //若包含了本行数据，则取消选中状态
+				        //    //alert("取消队列中已经包含本行数据");
+				        //    //$("#persondatagrid").datagrid("uncheckRow", rowIndex);
+				        //    $("#persondatagrid").datagrid("unselectRow", rowIndex);
+				        //}
+				    //}
+				    if (isLoadSuccess) {
+				        my_popFromArr(arr_UnSelectPersonIds, rowData["PID"]);
 				    }
-				    //my_popFromArr(arr_UnSelectPersonIds, rowData["PID"]);
 				    //alert("onSelect");
 				     //alert(arr_UnSelectPersonIds.length);
                 },
 				onUnselect:function(rowIndex, rowData){
                     //alert("去掉已经选中的一行");
-                    my_pushInArr(arr_UnSelectPersonIds,rowData["PID"]);   
+				    my_pushInArr(arr_UnSelectPersonIds, rowData["PID"]);
+				    
                     //alert(arr_UnSelectPersonIds.length);
                 }
 		    });
@@ -94,7 +93,9 @@
 		}
 		
 		var arr_UnSelectPersonIds = [];
-		
+        //思路如下：
+        // 页面加载之前将isLoadSuccess设置为false，页面加载过程中会触发onSelect及onCheck事件，此时不执行写在onSelect中的方法，只有在页面加载后才会执行onSelect中的方法
+		var isLoadSuccess = false;
 		 //向数组中插入不重复的值
             function my_pushInArr(arr,value){
                 if(arr.indexOf(value)==-1){   
@@ -125,47 +126,6 @@
                  { field: 'isVIP', title: '是否是VIP', width: 150 },
                  { field: 'isTemp', title: '是否是临时联系人', width: 50 }
 		]]
-
-		function append() {
-		    //向表格中追加
-		    var row_temp = new Object();
-		    //获取添加的内容
-		   var phone= $("#txt_addPerson").val();
-		    //row_temp.productid = '1';
-		   row_temp.PName = '临时联系人';
-		   row_temp.isVIP = true;
-		   row_temp.PhoneNum = phone;
-		   row_temp.isTemp = 2;
-		   $('#person_temp_datagrid').datagrid('appendRow', row_temp);
-		}
-
-		function split4id(obj, index_temp) {
-		    var ids = "";
-		    for (var i = 0; i < obj.length; i++) {
-		        ids = ids + obj[i][index] + ",";
-		    }
-		    ids = ids.substr(0, ids.length - 1);
-		    return ids;
-		}
-
-        //取得新添加的联系人对象
-		function getAppendPersonObj() {
-		    var checkeds = $("#persondatagrid").datagrid("getChecked");
-		    //var phones = split4id(checkeds, "PhoneNum");
-		    var phones = split4phone(checkeds, "PhoneNum");
-		    phones;
-		}
-		
-		function split4phone(obj, temp) {
-		    var phones = "";
-
-		    $.each(obj, function (index, data) {
-		        if (data["isTemp"] == 2) {
-		            phones = phones + data[temp] + ",";
-		        }
-		    })
-		   return phones = phones.substr(0, phones.length - 1);
-		}
 
 		function split4id(obj, index) {
 		    var ids = "";
