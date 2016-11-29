@@ -52,8 +52,9 @@
 				onCheck:function(rowIndex,rowData){
 					//alert("被点击了");
 					//判断在数组中是否保存了本行数据
-				    //alert("onCheck");
+				    alert("onCheck");
 		        },
+				
 				onSelect: function (rowIndex, rowData) {
                     //若页面加载结束后，才可以进行选中操作
 				    //if (!isPageChange) {
@@ -66,6 +67,7 @@
 				        //    $("#persondatagrid").datagrid("unselectRow", rowIndex);
 				        //}
 				    //}
+					alert("onSelect");
 				    if (isLoadSuccess) {
 				        my_popFromArr(arr_UnSelectPersonIds, rowData["PID"]);
 				    }

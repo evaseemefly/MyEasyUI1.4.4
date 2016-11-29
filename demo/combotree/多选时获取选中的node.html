@@ -8,46 +8,51 @@
 	<link rel="stylesheet" type="text/css" href="../demo.css">
 	<script type="text/javascript" src="../../jquery.min.js"></script>
 	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
-	
 	<script type="text/javascript">
+		var editIndex = undefined;
 		$(function () {
-		    loadComboTree_Department();
-			//var node=$("#cc").combotree('getValues');
-			var node=$('#cc').combotree("tree").tree('getChecked');
-			alert(node.text);
+		    loadComboTree_Department("tree_data1.json");
 		})		
 		
-        var isLoadSuccess_Department=false;
+		function myCheckComboTree(){
+			var nodes=$("#cc").combotree("tree").tree('getChecked');
+			alert(nodes);
+		}
 		
-		 function loadComboTree_Department() {
+		 function loadComboTree_Department(myurl) {
             //2.2 加载上级部门下拉框
             $("#cc").combotree({
                 panelWidth: 250,
                 panelHeight: 250,
-                url: 'tree_data1.json',
+                url: myurl,
                 //required: true,
                 method: 'get',
                 //width: 210,
-				
-                multiple: true,
                 cascadeCheck: $(this).is(':checked'),//选中子节点不会选中父节点
                 //formatter: formatItem_combobox
-                //使用onCheck
                 onSelect: function (node) {
-                    alert("select" + node);
+					//var nodes=$("#cc").combotree("tree").tree('getSelected');
+					//alert(nodes.length);
+                    //alert("选中了当前行" + node);
+                    //var nodes = $('#DepartmentName_combotree').combotree("tree").tree('getChecked');
+                    //alert("选中了" + nodes.length+"个节点");
+                    //loadDataGridByGroupDepartment_Persons();
                 },
-                onBeforeLoad:function(){isLoadSuccess_Department=false},
-                onLoadSuccess:function(){isLoadSuccess_Department=true},
-                onCheck:function(node){
-				alert("check" + node);
-                    if(isLoadSuccess_Department){
-					alert("check" + node);
-                        //loadDataGridByGroupDepartment_Persons();
-                    }                   
-                }
-
+				onCheck:function(node){
+					var nodes=$("#cc").combotree("tree").tree('getChecked');
+			alert(nodes);
+				},
+				UnCheck:function(node){
+					var nodes=$("#cc").combotree("tree").tree('getChecked');
+			alert(nodes);
+				}
+                //onUnselect:function(node){
+                //    alert("去掉已经选中的一行");
+                //    //loadDataGridByGroupDepartment_Persons();
+                //}
             });
-
+            //选中子节点不会选中父节点
+            //$('#DepartmentName_combotree').combotree({ cascadeCheck: $(this).is(':checked') })
 
         }
 	</script>
@@ -59,7 +64,7 @@
 		<span>Cascade Check: </span>
 		<input type="checkbox" checked onclick="$('#cc').combotree({cascadeCheck:$(this).is(':checked')})">
 	</div>
-	<select id="cc" class="easyui-combotree"  multiple style="width:200px;"></select>
+	<select id="cc" class="easyui-combotree" multiple style="width:200px;"></select>
 
 </body>
 </html>
