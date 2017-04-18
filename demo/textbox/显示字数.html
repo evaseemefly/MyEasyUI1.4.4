@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Custom TextBox - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="../../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../demo.css">
+	<script type="text/javascript" src="../../jquery.min.js"></script>
+	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+	<script type="text/javascript">	
+	$(function(){
+	//不可行
+	$("#my").textbox({propmt:'字数字数'});
+	//$("#my").attr("prompt","abc");
+	
+	
+	
+	var textarea=$("#arr_content").validatebox("isValid");
+       if(!textarea){
+           return false;
+       }else{ 
+               return true;
+            }
+	})
+	
+
+function TextCount(oTextArea){
+    //获得textarea的maxlength属性
+    //var MaxLength=oTextArea.getAttribute("maxlength");
+    var num=oTextArea.value.length;  
+   //$('#txtNum').attr('visi','yes').show();
+           $('#txtNum').html("<font font-size='13px'>已经输入："+num+"字</font>");
+    //返回文本框字符个数是否符号要求的boolean值
+   // return oTextArea.value.length < oTextArea.getAttribute("maxlength");
+}
+
+function MsgCount(oTextArea){
+    //获得textarea的maxlength属性
+    //var MaxLength=oTextArea.getAttribute("maxlength");
+    var num=oTextArea.value.length;  
+   //$('#txtNum').attr('visi','yes').show();
+    $('#txtNum').html("<font font-size='13px'>已经输入："+num+"字</font>");
+    //返回文本框字符个数是否符号要求的boolean值
+   // return oTextArea.value.length < oTextArea.getAttribute("maxlength");
+}
+
+	</script>
+</head>
+<body>
+	<h2>Multiline TextBox</h2>
+	<p>This example shows how to define a textbox for the user to enter multi-line text input.</p>
+	<div style="margin:20px 0;"></div>
+	<input id="my" class="easyui-textbox" data-options="multiline:true,prompt:'Enter something here...'" value="" style="width:300px;height:100px">
+	<tr style="height:6px">
+  <td style="width: 25%;text-align:center"><span i18nName="exa_arr_content" class="i18n"></span>
+  </td>
+  <td style="width: 269px;text-align:left">
+      <textarea rows="3"  cols="20" height="71px"  id="arr_content" style="width:269px;" maxlength="500" class="easyui-validatebox textarea " validtype="length[0,500]"  invalidMessage="最大长度500位" oninput="return TextCount(this);" onchange="return TextCount(this);" onpropertychange="return TextCount(this);"></textarea>
+	  
+	  <input class="easyui-validatebox textbox" name="message" id="message"  data-options="multiline:true,prompt:'输入短信内容...'" style="height:200px;width:400px"oninput="return MsgCount(this);" onchange="return MsgCount(this);" onpropertychange="return MsgCount(this);">
+	  
+	     <input class="easyui-textbox easyui-validatebox" name="message" id="message1"  data-options="multiline:true,prompt:'输入短信内容...'" style="height:200px;width:400px"oninput="return MsgCount(this);" onchange="return MsgCount(this);" onpropertychange="return MsgCount(this);">
+   </td>
+</tr>
+<tr>
+        <td style="width: 25%;text-align:center"></td>
+        <td style="width: 269px;text-align:right"><span id="txtNum"></span></td>
+</tr>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Basic TextBox - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="../../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../demo.css">
+	<script type="text/javascript" src="../../jquery.min.js"></script>
+	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+	<script type="text/javascript">
+	$(function(){
+	
+	})
+	function doCheck(){
+		var content= $(".easyui-textbox").textbox('getValue');
+		if(content==""){
+		alert("内容为空")}
+	}
+	</script>
+	
+</head>
+<body>
+	<h2>Basic TextBox</h2>
+	<p>The textbox allows a user to enter information.</p>
+	<div style="margin:20px 0;"></div>
+	<div class="easyui-panel" title="Register" style="width:400px;padding:30px 60px">
+		<div style="margin-bottom:20px">
+			<div>Email:</div>
+			<input class="easyui-textbox" data-options="prompt:'Enter a email address...',validType:'email'" style="width:100%;height:32px">
+		</div>		
+		
+		<div>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick='doCheck()'style="width:100%;height:32px">Register</a>
+		</div>
+	</div>
+</body>
+</html>

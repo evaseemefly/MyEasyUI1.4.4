@@ -23,7 +23,7 @@
 		var editIndex = undefined;
 		
 		$(function () {
-		    loadDataGrid_Person("persondatagrid","datagrid_data_person.json","200");
+		    //loadDataGrid_Person("persondatagrid","datagrid_data_person.json","200");
 			loadDataGrid_Person("person_temp_datagrid","");
 		})
 
@@ -85,9 +85,31 @@
 		   row_temp.isVIP = true;
 		   row_temp.PhoneNum = phone;
 		   row_temp.isTemp = 2;
+		   var data= $('#person_temp_datagrid').datagrid('getData');
+		   var rows=$("#person_temp_datagrid").datagrid('getRows');
+		   if(CheckExist(row_temp,rows)){
+				alert("已添加该号码");
+				return;
+		   }
 		   $('#person_temp_datagrid').datagrid('appendRow', row_temp);
+		   
 		}
-
+		
+		
+		
+		function CheckExist(obj,list){
+			var index=0;
+			var result=false;
+			$.each(list,function(index,value){
+				index++;
+				if(obj.PhoneNum==value.PhoneNum){
+				result=true;
+				return false;
+				}
+			})
+			return result;
+		}
+		
 		function split4id(obj, index_temp) {
 		    var ids = "";
 		    for (var i = 0; i < obj.length; i++) {
