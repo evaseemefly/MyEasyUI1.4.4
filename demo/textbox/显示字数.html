@@ -48,24 +48,33 @@ function MsgCount(oTextArea){
 	</script>
 </head>
 <body>
-	<h2>Multiline TextBox</h2>
-	<p>This example shows how to define a textbox for the user to enter multi-line text input.</p>
-	<div style="margin:20px 0;"></div>
+	
 	<input id="my" class="easyui-textbox" data-options="multiline:true,prompt:'Enter something here...'" value="" style="width:300px;height:100px">
-	<tr style="height:6px">
+	<br/>
+	<table>
+			<tr style="height:6px">
   <td style="width: 25%;text-align:center"><span i18nName="exa_arr_content" class="i18n"></span>
   </td>
   <td style="width: 269px;text-align:left">
+  	textrea
       <textarea rows="3"  cols="20" height="71px"  id="arr_content" style="width:269px;" maxlength="500" class="easyui-validatebox textarea " validtype="length[0,500]"  invalidMessage="最大长度500位" oninput="return TextCount(this);" onchange="return TextCount(this);" onpropertychange="return TextCount(this);"></textarea>
-	  
-	  <input class="easyui-validatebox textbox" name="message" id="message"  data-options="multiline:true,prompt:'输入短信内容...'" style="height:200px;width:400px"oninput="return MsgCount(this);" onchange="return MsgCount(this);" onpropertychange="return MsgCount(this);">
-	  
-	     <input class="easyui-textbox easyui-validatebox" name="message" id="message1"  data-options="multiline:true,prompt:'输入短信内容...'" style="height:200px;width:400px"oninput="return MsgCount(this);" onchange="return MsgCount(this);" onpropertychange="return MsgCount(this);">
    </td>
 </tr>
 <tr>
-        <td style="width: 25%;text-align:center"></td>
-        <td style="width: 269px;text-align:right"><span id="txtNum"></span></td>
+<td>
+	input标签 textbox
+ <input class="<!--easyui-validatebox -->textbox" name="message" id="message"  data-options="multiline:true,prompt:'输入短信内容...'" style="height:200px;width:200px"oninput="return MsgCount(this);" onchange="return MsgCount(this);" onpropertychange="return MsgCount(this);">
+</td>
+<td>
+	input标签 easyui-textbox
+	     <input class="easyui-textbox easyui-validatebox" name="message" id="message1"  data-options="multiline:true,prompt:'输入短信内容...'" style="height:200px;width:200px" oninput="return MsgCount(this);" onchange="return MsgCount(this);" >
+</td>
 </tr>
+<tr>
+        <td style="width: 25%;text-align:center"></td>
+        <td style="width: 269px;text-align:left"><span id="txtNum"></span></td>
+</tr>
+	</table>
+
 </body>
 </html>
