@@ -29,7 +29,7 @@
                 //})
 
 
-                $.post("/Admin/Home/GetMenuItem", function (data) {
+                $.post("datagrid_data2.json", function (data) {
                     //alert(data);
                     var test = data;
                     $.each(test, function (i, e) {
@@ -66,7 +66,7 @@
                 }
             }
             $('#easyui_tree').tree({
-                url: '/Admin/Home/GetMenuItem',
+                url: 'datagrid_data2.json',
                 onLoadSuccess: function (node, data) {
                     //调用方法 统一处理 Ajax获取的 json数据！
                     //$.procAjaxData(data);
