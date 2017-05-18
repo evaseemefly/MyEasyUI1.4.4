@@ -15,6 +15,21 @@
     method:'get',
     animate:true,
       checkbox:true,
+      onLoadSuccess:function(node,data){
+      	//找到tree div
+//    	var tree_div=$('#tt').tree('getChecked');
+//    	var node_test=$("#tt").tree('find',6);
+//    	$('#tt').tree('select',node_test);
+      	
+//    	var node = $('#tt').tree('find', 6);
+//		$('#tt').tree('select', node.target);
+		
+		var checked_node=$('#tt').tree('getChecked')[0];
+		$('#tt').tree('select', checked_node.target);
+      },
+      onCheck:function(node,checked){
+      	alert(node);
+      }
 //  onLoadSuccess:function(node,data){  
 //var nodeDep = $('#tt').tree('find',checkeid);  
 //if (null != nodeDep && undefined != nodeDep)  
